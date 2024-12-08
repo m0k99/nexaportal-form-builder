@@ -7,7 +7,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/nexaportal-form-builder/',
+  base: '/',
   plugins: [
     vue(),
     vueJsx(),
