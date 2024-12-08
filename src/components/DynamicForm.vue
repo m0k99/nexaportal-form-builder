@@ -8,6 +8,7 @@
       <label class="block text-gray-700 text-sm font-bold mb-2"> Select Role </label>
       <select
         v-model="selectedRole"
+        @change="handleRoleChange"
         class="shadow appearance-none border rounded-2xl text-sm w-full py-3 px-3.5 bg-[#ffffff] outline-[#CCD6E2] focus:outline-[#7540c0] text-[#95A4B9]"
       >
         <option value="User">User</option>
@@ -36,21 +37,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, onMounted } from 'vue'
 import FormField from './FormField.vue'
 import { useFormStore } from '@/stores/formStore'
-import type { FormSchema, FormFieldSchema } from '@/types/formTypes.d'
+import type { FormSchema } from '@/types/formTypes.d'
 
 const props = defineProps<{
   schema: FormSchema
-  title: string
+  title?: string
 }>()
 
 const formStore = useFormStore()
 const selectedRole = ref<'Admin' | 'User'>('User')
 const formData = reactive<{ [key: string]: any }>({})
 
-selectedRole.value = formStore.currentRole
+onMounted(() => {
+  selectedRole.value = formStore.currentRole
+})
+
+const handleRoleChange = () => {
+  formStore.setRole(selectedRole.value)
+
+  Object.keys(formData).forEach(key => {
+    delete formData[key]
+  })
+}
 
 const visibleFields = computed(() =>
   props.schema.fields.filter((field) => !field.adminOnly || selectedRole.value === 'Admin'),
@@ -65,7 +76,12 @@ const isFormValid = computed(() => {
 
 const submitForm = () => {
   if (isFormValid.value) {
-    formStore.submitForm(formData)
+    // Add the current role to the form submission
+    const submissionData = {
+      ...formData,
+      role: selectedRole.value
+    }
+    formStore.submitForm(submissionData)
   }
 }
 </script>
