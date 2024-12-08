@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <DynamicForm :schema="formSchema" />
+  <div class="min-h-screen bg-[#f5f2f7] py-6 flex flex-col justify-center sm:py-12">
+    <DynamicForm :schema="formSchema" title="Register Form" />
   </div>
 </template>
 
@@ -17,8 +17,8 @@ const formSchema: FormSchema = {
       placeholder: 'Enter your full name',
       validation: [
         { type: 'required', message: 'Name is required' },
-        { type: 'minLength', value: 2, message: 'Name must be at least 2 characters' }
-      ]
+        { type: 'minLength', value: 2, message: 'Name must be at least 2 characters' },
+      ],
     },
     {
       id: 'email',
@@ -27,17 +27,19 @@ const formSchema: FormSchema = {
       placeholder: 'Enter your email',
       validation: [
         { type: 'required', message: 'Email is required' },
-        { type: 'pattern', value: '^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$', message: 'Invalid email format' }
-      ]
+        {
+          type: 'pattern',
+          value: '^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$',
+          message: 'Invalid email format',
+        },
+      ],
     },
     {
       id: 'department',
       type: 'select',
       label: 'Department',
       options: ['HR', 'IT', 'Finance', 'Marketing'],
-      validation: [
-        { type: 'required', message: 'Department is required' }
-      ]
+      validation: [{ type: 'required', message: 'Department is required' }],
     },
     {
       id: 'adminCode',
@@ -45,10 +47,8 @@ const formSchema: FormSchema = {
       label: 'Admin Code',
       placeholder: 'Enter admin code',
       adminOnly: true,
-      validation: [
-        { type: 'required', message: 'Admin code is required' }
-      ]
-    }
-  ]
+      validation: [{ type: 'required', message: 'Admin code is required' }],
+    },
+  ],
 }
 </script>

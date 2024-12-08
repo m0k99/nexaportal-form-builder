@@ -1,11 +1,18 @@
 <template>
   <div class="mb-4">
-    <label :for="field.id">
+    <label :for="field.id" class="block text-gray-700 text-xs font-bold mb-2">
       {{ field.label }}
     </label>
     <!--    //TODO make this part dynamic component -->
     <template v-if="field.type === 'text'">
-      <input :id="field.id" type="text" v-model="localValue" :placeholder="field.placeholder" />
+      <input
+        :id="field.id"
+        type="text"
+        v-model="localValue"
+        :placeholder="field.placeholder"
+        class="shadow bg-[#ffffff] outline-[#CCD6E2] focus:outline-[#7540c0] text-[#95A4B9] appearance-none border rounded-2xl w-full py-3 px-3.5 leading-tight"
+        :class="{ 'border-red-500': hasErrors }"
+      />
     </template>
 
     <template v-else-if="field.type === 'number'">
@@ -14,11 +21,18 @@
         type="number"
         v-model.number="localValue"
         :placeholder="field.placeholder"
+        class="shadow appearance-none border rounded-2xl w-full py-3 px-3.5 bg-[#ffffff] outline-[#CCD6E2] focus:outline-[#7540c0] text-[#95A4B9] leading-tight"
+        :class="{ 'border-red-500': hasErrors }"
       />
     </template>
 
     <template v-else-if="field.type === 'select'">
-      <select :id="field.id" v-model="localValue">
+      <select
+        :id="field.id"
+        v-model="localValue"
+        class="shadow appearance-none border rounded-2xl w-full py-3 px-3.5 bg-[#ffffff] outline-[#CCD6E2] focus:outline-[#7540c0] text-[#95A4B9] leading-tight"
+        :class="{ 'border-red-500': hasErrors }"
+      >
         <option v-for="option in field.options" :key="option" :value="option">
           {{ option }}
         </option>
@@ -26,10 +40,10 @@
     </template>
 
     <template v-else-if="field.type === 'checkbox'">
-      <input :id="field.id" type="checkbox" v-model="localValue" />
+      <input :id="field.id" type="checkbox" v-model="localValue" class="mr-2 leading-tight" />
     </template>
 
-    <p v-if="hasErrors">
+    <p v-if="hasErrors" class="text-red-500 text-xs italic mt-1">
       {{ errors.join(', ') }}
     </p>
   </div>
